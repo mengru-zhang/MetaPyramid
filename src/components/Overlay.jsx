@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "../index.css";
-import boxFileMap from "../data/boxFileMap";
+import boxFileMap from "../data/boxFileMap.js";
+
+
+// ✅ 写在组件外，提升性能和打包正确性
+const modules = import.meta.glob("../data/boxes/*.json");
 
 export default function Overlay({ title, onClose }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const fileName = boxFileMap[title]; // 从映射表中获取 JSON 文件名
+    // 👇 添加这两行调试输出
+    console.log("Trying to load:", title);
+    console.log("Available module keys:", Object.keys(modules));
+
+    const fileName = boxFileMap[title];
 
     if (!fileName) {
       setError(true);
@@ -15,15 +23,24 @@ export default function Overlay({ title, onClose }) {
       return;
     }
 
-    import(`../data/boxes/${fileName}`)
-      .then((module) => {
-        setData(module.default);
-        setError(false);
-      })
-      .catch(() => {
-        setData(null);
-        setError(true);
-      });
+    const path = `../data/boxes/${fileName}`;
+    const loader = modules[path];
+
+    if (loader) {
+      setData(null); // 开始加载，先清空旧数据
+      setError(false);
+      loader()
+        .then((module) => {
+          setData(module.default);
+        })
+        .catch(() => {
+          setData(null);
+          setError(true);
+        });
+    } else {
+      setError(true);
+      setData(null);
+    }
   }, [title]);
 
   return (

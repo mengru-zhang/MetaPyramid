@@ -12,9 +12,9 @@ const Box = ({ text, className = "", onClick }) => (
 export default function Pyramid({ onBoxClick }) {
   const [selectedBox, setSelectedBox] = useState(null);
 
-  // const handleClick = (text) => {
-  //   setSelectedBox(text);
-  // };
+  const handleClick = (text) => {
+    setSelectedBox(text);
+  };
 
   const closeOverlay = () => {
     setSelectedBox(null);
@@ -22,7 +22,7 @@ export default function Pyramid({ onBoxClick }) {
 
   return (
     <div className="pyramid-container">
-      <div className="title">Categorization Chart</div>
+      {/* <div className="title">Categorization Chart</div> */}
 
       <div className="pyramid">
         {/* 第一层 */}
@@ -128,13 +128,9 @@ export default function Pyramid({ onBoxClick }) {
 
       {/* 弹窗 */}
       {selectedBox && (
-        <Overlay title={selectedBox} onClose={closeOverlay}>
-          {
-            chartData.find((item) => item.title === selectedBox)?.content
-              || <p>No content available.</p>
-          }
-        </Overlay>
+        <Overlay title={selectedBox} onClose={closeOverlay} />
       )}
+
     </div>
   );
 }
