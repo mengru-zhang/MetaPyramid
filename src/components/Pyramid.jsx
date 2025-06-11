@@ -12,9 +12,9 @@ const Box = ({ text, className = "", onClick }) => (
 export default function Pyramid({ onBoxClick }) {
   const [selectedBox, setSelectedBox] = useState(null);
 
-  const handleClick = (text) => {
-    setSelectedBox(text);
-  };
+  // const handleClick = (text) => {
+  //   setSelectedBox(text);
+  // };
 
   const closeOverlay = () => {
     setSelectedBox(null);
