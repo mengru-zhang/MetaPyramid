@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
 import Overlay from "./Overlay";
-import chartData from "../data/chartData";
+
 
 const Box = ({ text, className = "", onClick }) => (
   <div className={`blue-box ${className}`} onClick={() => onClick?.(text)}>
